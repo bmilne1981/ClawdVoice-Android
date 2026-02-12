@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ClawdVoice</string>
+    <string name="ready">Ready</string>
+    <string name="hold_to_speak">Hold to speak</string>
+    <string name="you_said">YOU SAID</string>
+    <string name="clawd_said">CLAWD</string>
+    <string name="settings">Settings</string>
+    <string name="server_url">Server URL</string>
+    <string name="server_url_hint">http://192.168.1.197:8770</string>
+    <string name="server_url_description">The IP address and port of your Mac mini running the voice bridge server.</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="save">Save</string>
+</resources>

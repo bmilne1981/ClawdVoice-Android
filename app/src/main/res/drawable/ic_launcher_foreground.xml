@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:translateX="21.6"
+        android:translateY="21.6">
+        <!-- Background circle -->
+        <path
+            android:fillColor="#5AB6B8"
+            android:pathData="M54,54m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0"/>
+        <!-- Main paw pad -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,70c-8.8,0 -16,-7.2 -16,-16c0,-8.8 7.2,-16 16,-16s16,7.2 16,16C70,62.8 62.8,70 54,70zM54,42c-6.6,0 -12,5.4 -12,12s5.4,12 12,12s12,-5.4 12,-12S60.6,42 54,42z"/>
+        <!-- Top left toe -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M40,42m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"/>
+        <!-- Top right toe -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M68,42m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"/>
+        <!-- Bottom left toe -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M32,58m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+        <!-- Bottom right toe -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M76,58m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+    </group>
+</vector>

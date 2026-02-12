@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#121212</color>
+    <color name="error">#CF6679</color>
+    <color name="mic_active">#5AB6B8</color>
+    <color name="mic_normal">#2A2A2A</color>
+    <color name="mic_processing">#FFA726</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_surface">#E1E1E1</color>
+    <color name="on_surface_variant">#A0A0A0</color>
+    <color name="primary">#5AB6B8</color>
+    <color name="primary_variant">#3D8F93</color>
+    <color name="surface">#1E1E1E</color>
+    <string name="app_name">ClawdVoice</string>
+    <string name="clawd_said">CLAWD</string>
+    <string name="hold_to_speak">Hold to speak</string>
+    <string name="ready">Ready</string>
+    <string name="save">Save</string>
+    <string name="server_url">Server URL</string>
+    <string name="server_url_description">The IP address and port of your Mac mini running the voice bridge server.</string>
+    <string name="server_url_hint">http://192.168.1.197:8770</string>
+    <string name="settings">Settings</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="you_said">YOU SAID</string>
+    <style name="Theme.ClawdVoice" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorError">@color/error</item>
+        <item name="android:statusBarColor">@color/surface</item>
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
+</resources>

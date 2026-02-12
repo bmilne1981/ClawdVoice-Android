@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/drawable_ic_mic.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/drawable/ic_mic.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/drawable_mic_button_active.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/drawable/mic_button_active.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/layout_activity_main.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/menu_main_menu.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/menu/main_menu.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/drawable_mic_button_processing.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/drawable/mic_button_processing.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/drawable_ic_settings.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/drawable/ic_settings.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/layout_activity_settings.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/drawable_mic_button_normal.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/drawable/mic_button_normal.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.clawd.voice.app-merged_res-35:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.clawd.voice.app-main-37:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-37:/mipmap-anydpi-v26/ic_launcher.xml"
+    }
+]
