@@ -1,16 +1,23 @@
 package com.clawd.voice
 
 import android.Manifest
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -28,7 +35,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var settings: SettingsManager
     
     private var isListening = false
-    private var isFinishing = false  // Suppress errors during trailing delay
+    private var isFinishing = false
+    private var wakeWordTriggered = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +52,49 @@ class MainActivity : AppCompatActivity() {
         setupSpeechRecognizer()
         setupUI()
         checkPermissions()
+        
+        // Handle wake word trigger from service
+        handleWakeWordIntent(intent)
+    }
+    
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { handleWakeWordIntent(it) }
+    }
+    
+    private fun handleWakeWordIntent(intent: Intent) {
+        if (intent.getBooleanExtra("wake_word_triggered", false)) {
+            intent.removeExtra("wake_word_triggered")
+            wakeWordTriggered = true
+            
+            // Haptic feedback
+            vibrateShort()
+            
+            // Auto-start listening
+            binding.root.post {
+                startListening()
+            }
+        }
+    }
+    
+    private fun vibrateShort() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val vm = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                vm.defaultVibrator.vibrate(
+                    VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
+                } else {
+                    @Suppress("DEPRECATION")
+                    v.vibrate(100)
+                }
+            }
+        } catch (_: Exception) {}
     }
     
     private fun setupSpeechRecognizer() {
@@ -61,9 +112,7 @@ class MainActivity : AppCompatActivity() {
             
             override fun onBeginningOfSpeech() {}
             
-            override fun onRmsChanged(rmsdB: Float) {
-                // Could animate based on volume level
-            }
+            override fun onRmsChanged(rmsdB: Float) {}
             
             override fun onBufferReceived(buffer: ByteArray?) {}
             
@@ -73,7 +122,6 @@ class MainActivity : AppCompatActivity() {
             }
             
             override fun onError(error: Int) {
-                // Ignore errors during the trailing delay period
                 if (isFinishing) return
                 
                 val message = when (error) {
@@ -91,6 +139,7 @@ class MainActivity : AppCompatActivity() {
                 updateStatus(message)
                 resetUI()
                 isListening = false
+                resumeWakeWordIfNeeded()
             }
             
             override fun onResults(results: Bundle?) {
@@ -103,6 +152,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     updateStatus("No speech recognized")
                     resetUI()
+                    resumeWakeWordIfNeeded()
                 }
                 isListening = false
             }
@@ -137,7 +187,6 @@ class MainActivity : AppCompatActivity() {
     private fun startListening() {
         if (isListening) return
         
-        // Stop any playing audio
         audioPlayer.stop()
         
         isListening = true
@@ -153,17 +202,28 @@ class MainActivity : AppCompatActivity() {
         
         try {
             speechRecognizer.startListening(intent)
+            
+            // If triggered by wake word, auto-stop after trailing delay
+            if (wakeWordTriggered) {
+                wakeWordTriggered = false
+                // Let speech recognizer handle end-of-speech naturally
+                // It has its own silence detection; we add a trailing delay
+                binding.root.postDelayed({
+                    if (isListening && !isFinishing) {
+                        stopListening()
+                    }
+                }, 10000) // 10s max listen time for wake word trigger
+            }
         } catch (e: Exception) {
             updateStatus("Error starting speech recognition")
             isListening = false
+            resumeWakeWordIfNeeded()
         }
     }
     
     private fun stopListening() {
         if (!isListening) return
         
-        // Add 2-second delay to capture trailing words
-        // Keep isFinishing true until results come in (clears in onResults)
         isFinishing = true
         updateStatus("Finishing...")
         binding.root.postDelayed({
@@ -189,22 +249,36 @@ class MainActivity : AppCompatActivity() {
                                 runOnUiThread {
                                     updateStatus("Ready")
                                     resetUI()
+                                    resumeWakeWordIfNeeded()
                                 }
                             }
                         } else {
                             updateStatus("Ready")
                             resetUI()
+                            resumeWakeWordIfNeeded()
                         }
                     }
                     is ApiResponse.Error -> {
                         updateStatus("Error: ${response.message}")
                         resetUI()
+                        resumeWakeWordIfNeeded()
                     }
                 }
             } catch (e: Exception) {
                 updateStatus("Error: ${e.message}")
                 resetUI()
+                resumeWakeWordIfNeeded()
             }
+        }
+    }
+    
+    private fun resumeWakeWordIfNeeded() {
+        if (settings.isWakeWordEnabled()) {
+            // Send broadcast to resume wake word listening
+            val intent = Intent("com.clawd.voice.RESUME_WAKE_WORD")
+            sendBroadcast(intent)
+            // Also restart the service which will re-init Porcupine
+            WakeWordService.start(this)
         }
     }
     
@@ -221,13 +295,22 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun checkPermissions() {
+        val permissions = mutableListOf<String>()
+        
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) 
             != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.RECORD_AUDIO),
-                PERMISSION_REQUEST_RECORD_AUDIO
-            )
+            permissions.add(Manifest.permission.RECORD_AUDIO)
+        }
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        
+        if (permissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
         }
     }
     
@@ -237,9 +320,9 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_RECORD_AUDIO) {
-            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Microphone permission required", Toast.LENGTH_LONG).show()
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.any { it != PackageManager.PERMISSION_GRANTED }) {
+                Toast.makeText(this, "Permissions required for full functionality", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -266,6 +349,6 @@ class MainActivity : AppCompatActivity() {
     }
     
     companion object {
-        private const val PERMISSION_REQUEST_RECORD_AUDIO = 1
+        private const val PERMISSION_REQUEST_CODE = 1
     }
 }

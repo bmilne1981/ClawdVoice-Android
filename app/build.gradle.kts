@@ -54,4 +54,7 @@ dependencies {
     
     // DataStore for settings
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    
+    // Porcupine wake word detection
+    implementation("ai.picovoice:porcupine-android:3.0.3")
 }
