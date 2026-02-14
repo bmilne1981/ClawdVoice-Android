@@ -1,14 +1,12 @@
 package com.clawd.voice
 
 import android.Manifest
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
+import android.util.Log
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -122,7 +120,13 @@ class MainActivity : AppCompatActivity() {
             }
             
             override fun onError(error: Int) {
-                if (isFinishing) return
+                if (isFinishing) {
+                    isListening = false
+                    isFinishing = false
+                    resetUI()
+                    resumeWakeWordIfNeeded()
+                    return
+                }
                 
                 val message = when (error) {
                     SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
@@ -279,11 +283,12 @@ class MainActivity : AppCompatActivity() {
     
     private fun resumeWakeWordIfNeeded() {
         if (settings.isWakeWordEnabled()) {
-            // Send broadcast to resume wake word listening
-            val intent = Intent("com.clawd.voice.RESUME_WAKE_WORD")
-            sendBroadcast(intent)
-            // Also restart the service which will re-init Porcupine
-            WakeWordService.start(this)
+            // Delay restart to ensure the service has fully stopped
+            // and the microphone is released
+            binding.root.postDelayed({
+                WakeWordService.start(this)
+                Log.d("MainActivity", "Wake word service restarted")
+            }, 500)
         }
     }
     
