@@ -193,9 +193,9 @@ class MainActivity : AppCompatActivity() {
         
         audioPlayer.stop()
         
-        // Pause wake word service to release the microphone
+        // Pause wake word detection to release the microphone
         if (settings.isWakeWordEnabled()) {
-            WakeWordService.stop(this)
+            WakeWordService.pause(this)
         }
         
         isListening = true
@@ -283,11 +283,10 @@ class MainActivity : AppCompatActivity() {
     
     private fun resumeWakeWordIfNeeded() {
         if (settings.isWakeWordEnabled()) {
-            // Delay restart to ensure the service has fully stopped
-            // and the microphone is released
+            // Small delay to ensure speech recognizer has fully released the mic
             binding.root.postDelayed({
-                WakeWordService.start(this)
-                Log.d("MainActivity", "Wake word service restarted")
+                WakeWordService.resume(this)
+                Log.d("MainActivity", "Wake word listening resumed")
             }, 500)
         }
     }

@@ -22,6 +22,11 @@ class WakeWordService : Service() {
         private const val TAG = "WakeWordService"
         private const val NOTIFICATION_CHANNEL_ID = "wake_word_channel"
         private const val NOTIFICATION_ID = 1001
+        private const val ACTION_PAUSE = "com.clawd.voice.PAUSE_WAKE_WORD"
+        private const val ACTION_RESUME = "com.clawd.voice.RESUME_WAKE_WORD"
+
+        // Static reference so MainActivity can pause/resume without rebinding
+        private var instance: WakeWordService? = null
 
         fun start(context: Context) {
             val intent = Intent(context, WakeWordService::class.java)
@@ -35,19 +40,46 @@ class WakeWordService : Service() {
         fun stop(context: Context) {
             context.stopService(Intent(context, WakeWordService::class.java))
         }
+
+        fun pause(context: Context) {
+            instance?.pauseListening() ?: run {
+                Log.w(TAG, "pause() called but no service instance")
+            }
+        }
+
+        fun resume(context: Context) {
+            instance?.resumeListening() ?: run {
+                Log.w(TAG, "resume() called but no service instance — restarting")
+                start(context)
+            }
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         settings = SettingsManager(this)
         createNotificationChannel()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(NOTIFICATION_ID, buildNotification())
-        startWakeWordDetection()
+
+        when (intent?.action) {
+            ACTION_PAUSE -> pauseListening()
+            ACTION_RESUME -> resumeListening()
+            else -> {
+                // Fresh start or restart — only init if not already running
+                if (porcupineManager == null) {
+                    startWakeWordDetection()
+                } else {
+                    resumeListening()
+                }
+            }
+        }
+
         return START_STICKY
     }
 
@@ -80,8 +112,8 @@ class WakeWordService : Service() {
     }
 
     private fun onWakeWordDetected() {
-        // Stop listening while we handle the wake word
-        porcupineManager?.stop()
+        // Pause listening while we handle the wake word (don't destroy)
+        pauseListening()
 
         // Launch MainActivity with wake word trigger
         val intent = Intent(this, MainActivity::class.java).apply {
@@ -89,6 +121,15 @@ class WakeWordService : Service() {
             putExtra("wake_word_triggered", true)
         }
         startActivity(intent)
+    }
+
+    fun pauseListening() {
+        try {
+            porcupineManager?.stop()
+            Log.d(TAG, "Paused wake word listening")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to pause listening: ${e.message}", e)
+        }
     }
 
     fun resumeListening() {
@@ -133,6 +174,7 @@ class WakeWordService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        instance = null
         try {
             porcupineManager?.stop()
             porcupineManager?.delete()
