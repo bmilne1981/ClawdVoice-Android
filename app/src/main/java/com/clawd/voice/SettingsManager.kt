@@ -24,6 +24,7 @@ class SettingsManager(private val context: Context) {
         
         const val DEFAULT_SERVER_URL = "http://192.168.1.197:8770"
         const val DEFAULT_SENSITIVITY = 0.7f
+        const val DEFAULT_ACCESS_KEY = "CsJhQLyWP8B6qkqFQ7It7H7JMVrffEQmnC6cBrPwNdxMNfkR4uNeTQ=="
     }
     
     fun getServerUrl(): String {
@@ -61,7 +62,7 @@ class SettingsManager(private val context: Context) {
     fun getPorcupineAccessKey(): String {
         return runBlocking {
             context.dataStore.data.map { preferences ->
-                preferences[PORCUPINE_ACCESS_KEY] ?: ""
+                preferences[PORCUPINE_ACCESS_KEY] ?: DEFAULT_ACCESS_KEY
             }.first()
         }
     }

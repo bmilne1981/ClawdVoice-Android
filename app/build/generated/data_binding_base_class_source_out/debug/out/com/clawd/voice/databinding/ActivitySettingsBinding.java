@@ -4,13 +4,15 @@ package com.clawd.voice.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.clawd.voice.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.slider.Slider;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -18,10 +20,16 @@ import java.lang.String;
 
 public final class ActivitySettingsBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final ScrollView rootView;
+
+  @NonNull
+  public final TextInputEditText accessKeyInput;
 
   @NonNull
   public final MaterialButton saveButton;
+
+  @NonNull
+  public final Slider sensitivitySlider;
 
   @NonNull
   public final TextInputEditText serverUrlInput;
@@ -29,18 +37,25 @@ public final class ActivitySettingsBinding implements ViewBinding {
   @NonNull
   public final MaterialButton testButton;
 
-  private ActivitySettingsBinding(@NonNull LinearLayout rootView,
-      @NonNull MaterialButton saveButton, @NonNull TextInputEditText serverUrlInput,
-      @NonNull MaterialButton testButton) {
+  @NonNull
+  public final SwitchMaterial wakeWordSwitch;
+
+  private ActivitySettingsBinding(@NonNull ScrollView rootView,
+      @NonNull TextInputEditText accessKeyInput, @NonNull MaterialButton saveButton,
+      @NonNull Slider sensitivitySlider, @NonNull TextInputEditText serverUrlInput,
+      @NonNull MaterialButton testButton, @NonNull SwitchMaterial wakeWordSwitch) {
     this.rootView = rootView;
+    this.accessKeyInput = accessKeyInput;
     this.saveButton = saveButton;
+    this.sensitivitySlider = sensitivitySlider;
     this.serverUrlInput = serverUrlInput;
     this.testButton = testButton;
+    this.wakeWordSwitch = wakeWordSwitch;
   }
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public ScrollView getRoot() {
     return rootView;
   }
 
@@ -65,9 +80,21 @@ public final class ActivitySettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.accessKeyInput;
+      TextInputEditText accessKeyInput = ViewBindings.findChildViewById(rootView, id);
+      if (accessKeyInput == null) {
+        break missingId;
+      }
+
       id = R.id.saveButton;
       MaterialButton saveButton = ViewBindings.findChildViewById(rootView, id);
       if (saveButton == null) {
+        break missingId;
+      }
+
+      id = R.id.sensitivitySlider;
+      Slider sensitivitySlider = ViewBindings.findChildViewById(rootView, id);
+      if (sensitivitySlider == null) {
         break missingId;
       }
 
@@ -83,8 +110,14 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivitySettingsBinding((LinearLayout) rootView, saveButton, serverUrlInput,
-          testButton);
+      id = R.id.wakeWordSwitch;
+      SwitchMaterial wakeWordSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (wakeWordSwitch == null) {
+        break missingId;
+      }
+
+      return new ActivitySettingsBinding((ScrollView) rootView, accessKeyInput, saveButton,
+          sensitivitySlider, serverUrlInput, testButton, wakeWordSwitch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -1,10 +1,10 @@
 [
     {
-        "merged": "com.clawd.voice.app-mergeDebugResources-34:/layout/activity_main.xml",
-        "source": "com.clawd.voice.app-main-37:/layout/activity_main.xml"
+        "merged": "com.clawd.voice.app-mergeDebugResources-35:/layout/activity_main.xml",
+        "source": "com.clawd.voice.app-main-38:/layout/activity_main.xml"
     },
     {
-        "merged": "com.clawd.voice.app-mergeDebugResources-34:/layout/activity_settings.xml",
-        "source": "com.clawd.voice.app-main-37:/layout/activity_settings.xml"
+        "merged": "com.clawd.voice.app-mergeDebugResources-35:/layout/activity_settings.xml",
+        "source": "com.clawd.voice.app-main-38:/layout/activity_settings.xml"
     }
 ]

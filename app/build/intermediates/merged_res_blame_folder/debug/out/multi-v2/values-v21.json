@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.clawd.voice.app-mergeDebugResources-33:/values-v21/values-v21.xml",
+            "outputFile": "com.clawd.voice.app-mergeDebugResources-34:/values-v21/values-v21.xml",
             "map": [
                 {
                     "source": "/Users/brianmilne/.gradle/caches/transforms-3/0689a9fd0de0e6fef5d369e599568f09/transformed/core-1.12.0/res/values-v21/values-v21.xml",

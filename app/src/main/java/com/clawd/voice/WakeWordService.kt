@@ -10,7 +10,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import ai.picovoice.porcupine.Porcupine
 import ai.picovoice.porcupine.PorcupineManager
 import ai.picovoice.porcupine.PorcupineManagerCallback
 
@@ -63,25 +62,17 @@ class WakeWordService : Service() {
         try {
             val sensitivity = settings.getWakeWordSensitivity()
 
-            // Use built-in "Porcupine" keyword as placeholder.
-            // To use a custom "Hey Clawd" keyword:
-            // 1. Go to https://console.picovoice.ai/
-            // 2. Train a custom keyword "Hey Clawd" for Android
-            // 3. Download the .ppn file
-            // 4. Place it in app/src/main/assets/hey-clawd_android.ppn
-            // 5. Replace the builder below with:
-            //    .setKeywordPath("hey-clawd_android.ppn")
             porcupineManager = PorcupineManager.Builder()
                 .setAccessKey(accessKey)
-                .setKeyword(Porcupine.BuiltInKeyword.PORCUPINE)
+                .setKeywordPath("hey-clawed.ppn")
                 .setSensitivity(sensitivity)
                 .build(this, PorcupineManagerCallback { keywordIndex ->
-                    Log.d(TAG, "Wake word detected!")
+                    Log.d(TAG, "Wake word detected: Hey Clawed!")
                     onWakeWordDetected()
                 })
 
             porcupineManager?.start()
-            Log.d(TAG, "Wake word detection started (keyword: Porcupine, sensitivity: $sensitivity)")
+            Log.d(TAG, "Wake word detection started (keyword: Hey Clawed, sensitivity: $sensitivity)")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to start Porcupine: ${e.message}", e)
             stopSelf()

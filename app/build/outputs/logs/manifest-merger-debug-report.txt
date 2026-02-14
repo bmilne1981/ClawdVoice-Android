@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-36:12
-INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-36:12
-INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-36:12
-INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-36:12
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-54:12
+INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-54:12
+INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-54:12
+INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:2:1-54:12
 MERGED from [androidx.databinding:viewbinding:8.2.0] /Users/brianmilne/.gradle/caches/transforms-3/ee7372a378ee3382ad11d1d4ea99a2b0/transformed/viewbinding-8.2.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.11.0] /Users/brianmilne/.gradle/caches/transforms-3/e308b6e6d17158c8079fa92ee7b91963/transformed/material-1.11.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/brianmilne/.gradle/caches/transforms-3/ff126ee9cca3fc604c8510753ac09caf/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
@@ -20,6 +20,8 @@ MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/brianmilne
 MERGED from [androidx.transition:transition:1.2.0] /Users/brianmilne/.gradle/caches/transforms-3/77ad483ac93f96cb4b844c8d431b41c6/transformed/transition-1.2.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/brianmilne/.gradle/caches/transforms-3/3ffad289452d90132b25cfa39b80d81f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/brianmilne/.gradle/caches/transforms-3/0c7ee7980467685fc899e8881f198f09/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [ai.picovoice:porcupine-android:3.0.3] /Users/brianmilne/.gradle/caches/transforms-3/91bf5fcd73f862fd21b2fd14a9d64cce/transformed/porcupine-android-3.0.3/AndroidManifest.xml:2:1-11:12
+MERGED from [ai.picovoice:android-voice-processor:1.0.2] /Users/brianmilne/.gradle/caches/transforms-3/bd73182e61361dc53710ec4ce2c71544/transformed/android-voice-processor-1.0.2/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/brianmilne/.gradle/caches/transforms-3/1b730982aa055e587f1c4dd43ee6713f/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/brianmilne/.gradle/caches/transforms-3/c02ac995872b81c83e1917567743c810/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.loader:loader:1.0.0] /Users/brianmilne/.gradle/caches/transforms-3/8b65fb41d7244f8684b31581aedcf434/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -72,9 +74,29 @@ uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:7:5-79
 	android:name
 		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:7:22-76
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:8:5-77
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:8:22-74
+uses-permission#android.permission.FOREGROUND_SERVICE_MICROPHONE
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:9:5-88
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:9:22-85
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:10:5-77
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:10:22-74
+uses-permission#android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:11:5-95
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:11:22-92
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:12:5-81
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:12:22-78
 application
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:9:5-34:19
-INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:9:5-34:19
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:14:5-52:19
+INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:14:5-52:19
 MERGED from [com.google.android.material:material:1.11.0] /Users/brianmilne/.gradle/caches/transforms-3/e308b6e6d17158c8079fa92ee7b91963/transformed/material-1.11.0/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] /Users/brianmilne/.gradle/caches/transforms-3/e308b6e6d17158c8079fa92ee7b91963/transformed/material-1.11.0/AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/brianmilne/.gradle/caches/transforms-3/ff126ee9cca3fc604c8510753ac09caf/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
@@ -96,47 +118,67 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/brianmilne/.gradle/c
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] /Users/brianmilne/.gradle/caches/transforms-3/0689a9fd0de0e6fef5d369e599568f09/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:14:9-35
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:19:9-35
 	android:label
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:12:9-41
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:17:9-41
 	android:roundIcon
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:13:9-54
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:18:9-54
 	tools:targetApi
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:17:9-29
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:22:9-29
 	android:icon
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:11:9-43
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:16:9-43
 	android:allowBackup
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:10:9-35
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:15:9-35
 	android:theme
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:15:9-48
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:20:9-48
 	android:usesCleartextTraffic
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:16:9-44
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:21:9-44
 activity#com.clawd.voice.MainActivity
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:19:9-27:20
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:24:9-32:20
 	android:launchMode
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:22:13-43
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:27:13-43
 	android:exported
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:21:13-36
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:26:13-36
 	android:name
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:20:13-41
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:25:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:23:13-26:29
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:28:13-31:29
 action#android.intent.action.MAIN
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:24:17-69
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:29:17-69
 	android:name
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:24:25-66
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:29:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:25:17-77
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:30:17-77
 	android:name
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:25:27-74
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:30:27-74
 activity#com.clawd.voice.SettingsActivity
-ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:29:9-32:58
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:34:9-37:58
 	android:parentActivityName
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:32:13-55
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:37:13-55
 	android:exported
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:31:13-37
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:36:13-37
 	android:name
-		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:30:13-45
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:35:13-45
+service#com.clawd.voice.WakeWordService
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:39:9-42:58
+	android:exported
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:41:13-37
+	android:foregroundServiceType
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:42:13-55
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:40:13-44
+receiver#com.clawd.voice.BootReceiver
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:44:9-50:20
+	android:exported
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:46:13-36
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:45:13-41
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:47:13-49:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:48:17-79
+	android:name
+		ADDED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml:48:25-76
 uses-sdk
 INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/brianmilne/clawd/apps/ClawdVoice-Android/app/src/main/AndroidManifest.xml
@@ -173,6 +215,10 @@ MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/brian
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/brianmilne/.gradle/caches/transforms-3/3ffad289452d90132b25cfa39b80d81f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/brianmilne/.gradle/caches/transforms-3/0c7ee7980467685fc899e8881f198f09/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/brianmilne/.gradle/caches/transforms-3/0c7ee7980467685fc899e8881f198f09/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [ai.picovoice:porcupine-android:3.0.3] /Users/brianmilne/.gradle/caches/transforms-3/91bf5fcd73f862fd21b2fd14a9d64cce/transformed/porcupine-android-3.0.3/AndroidManifest.xml:7:5-9:41
+MERGED from [ai.picovoice:porcupine-android:3.0.3] /Users/brianmilne/.gradle/caches/transforms-3/91bf5fcd73f862fd21b2fd14a9d64cce/transformed/porcupine-android-3.0.3/AndroidManifest.xml:7:5-9:41
+MERGED from [ai.picovoice:android-voice-processor:1.0.2] /Users/brianmilne/.gradle/caches/transforms-3/bd73182e61361dc53710ec4ce2c71544/transformed/android-voice-processor-1.0.2/AndroidManifest.xml:7:5-9:41
+MERGED from [ai.picovoice:android-voice-processor:1.0.2] /Users/brianmilne/.gradle/caches/transforms-3/bd73182e61361dc53710ec4ce2c71544/transformed/android-voice-processor-1.0.2/AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/brianmilne/.gradle/caches/transforms-3/1b730982aa055e587f1c4dd43ee6713f/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/brianmilne/.gradle/caches/transforms-3/1b730982aa055e587f1c4dd43ee6713f/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/brianmilne/.gradle/caches/transforms-3/c02ac995872b81c83e1917567743c810/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44

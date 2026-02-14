@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.clawd.voice.app-mergeDebugResources-33:/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "com.clawd.voice.app-mergeDebugResources-34:/values-zh-rHK/values-zh-rHK.xml",
             "map": [
                 {
                     "source": "/Users/brianmilne/.gradle/caches/transforms-3/e308b6e6d17158c8079fa92ee7b91963/transformed/material-1.11.0/res/values-zh-rHK/values-zh-rHK.xml",

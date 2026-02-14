@@ -11,16 +11,23 @@
     <color name="primary">#5AB6B8</color>
     <color name="primary_variant">#3D8F93</color>
     <color name="surface">#1E1E1E</color>
+    <string name="access_key_description">Free key from https://console.picovoice.ai/ — sign up and copy your Access Key.</string>
+    <string name="always_listening">Always Listening</string>
     <string name="app_name">ClawdVoice</string>
     <string name="clawd_said">CLAWD</string>
     <string name="hold_to_speak">Hold to speak</string>
+    <string name="porcupine_access_key_hint">Picovoice Access Key</string>
     <string name="ready">Ready</string>
     <string name="save">Save</string>
+    <string name="sensitivity_description">Higher = more responsive but more false triggers. Default: 0.7</string>
+    <string name="sensitivity_label">Wake Word Sensitivity</string>
     <string name="server_url">Server URL</string>
     <string name="server_url_description">The IP address and port of your Mac mini running the voice bridge server.</string>
     <string name="server_url_hint">http://192.168.1.197:8770</string>
     <string name="settings">Settings</string>
     <string name="test_connection">Test Connection</string>
+    <string name="wake_word_description">Say \"Porcupine\" to activate hands-free. Runs as a background service with minimal battery impact.</string>
+    <string name="wake_word_section">Wake Word Detection</string>
     <string name="you_said">YOU SAID</string>
     <style name="Theme.ClawdVoice" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
