@@ -189,6 +189,11 @@ class MainActivity : AppCompatActivity() {
         
         audioPlayer.stop()
         
+        // Pause wake word service to release the microphone
+        if (settings.isWakeWordEnabled()) {
+            WakeWordService.stop(this)
+        }
+        
         isListening = true
         isFinishing = false
         binding.transcriptText.text = ""
