@@ -65,10 +65,19 @@ node server.js
 ## Features
 
 - **Push-to-talk**: Hold the mic button to speak
+- **Wake word**: "Hey Clawed" via Porcupine wake word detection
+- **Instant ack**: Contextual acknowledgment plays immediately while response processes ("Let me check the weather...", "One sec...", etc.)
 - **2-second trailing delay**: Captures your full sentence even if you release early
 - **Android STT**: Uses Google's speech recognition
 - **ElevenLabs TTS**: Voice bridge returns audio (base64 MP3), played back in Clawd's voice
 - **Dark theme**: Matches the macOS app aesthetic
+
+### Ack System (v1.1)
+After speech recognition completes, the app fires two parallel requests:
+1. `GET /voice/ack?q=transcript` → plays contextual ack MP3 instantly
+2. `POST /voice` → real request to OpenClaw (15-30s)
+
+The response is queued and plays seamlessly after the ack finishes. If the response arrives before the ack finishes, it waits. No dead silence.
 
 ## Permissions
 
@@ -93,7 +102,8 @@ node server.js
 
 ## TODO
 
-- [ ] Wake word detection ("Hey Clawd")
+- [x] ~~Wake word detection~~ ("Hey Clawed" via Porcupine)
+- [x] ~~Instant ack system~~ (v1.1 — 2026-02-27)
 - [ ] Widget for home screen
 - [ ] Notification quick action
 - [ ] Wear OS companion app

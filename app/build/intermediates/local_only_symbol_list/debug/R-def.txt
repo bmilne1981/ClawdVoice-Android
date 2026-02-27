@@ -19,6 +19,7 @@ drawable mic_button_normal
 drawable mic_button_processing
 id accessKeyInput
 id action_settings
+id batteryStatusButton
 id holdHint
 id micButton
 id responseText

@@ -243,40 +243,74 @@ class MainActivity : AppCompatActivity() {
     private fun sendToServer(text: String) {
         updateStatus("Sending to Clawd...")
         
+        val serverUrl = settings.getServerUrl()
+        
+        // Fire ack request simultaneously with real request
         lifecycleScope.launch {
             try {
-                val serverUrl = settings.getServerUrl()
+                val ackData = apiClient.fetchAck(serverUrl, text)
+                if (ackData != null && ackData.isNotEmpty()) {
+                    runOnUiThread {
+                        updateStatus("Speaking...")
+                        audioPlayer.playAck(ackData) {
+                            // Ack finished, response not ready yet — show thinking status
+                            runOnUiThread {
+                                if (audioPlayer.isAckPlaying) return@runOnUiThread
+                                updateStatus("Thinking...")
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("MainActivity", "Ack fetch failed (non-fatal): ${e.message}")
+            }
+        }
+        
+        // Real request (runs in parallel with ack)
+        lifecycleScope.launch {
+            try {
                 val response = apiClient.sendVoiceRequest(serverUrl, text)
                 
                 when (response) {
                     is ApiResponse.Success -> {
-                        binding.responseText.text = response.text
-                        updateStatus("Playing response...")
+                        runOnUiThread {
+                            binding.responseText.text = response.text
+                        }
                         
                         if (response.audioData != null) {
-                            audioPlayer.play(response.audioData) {
-                                runOnUiThread {
-                                    updateStatus("Ready")
-                                    resetUI()
-                                    resumeWakeWordIfNeeded()
+                            runOnUiThread {
+                                updateStatus("Playing response...")
+                                // Play after ack (or immediately if ack already finished)
+                                audioPlayer.playAfterAck(response.audioData) {
+                                    runOnUiThread {
+                                        updateStatus("Ready")
+                                        resetUI()
+                                        resumeWakeWordIfNeeded()
+                                    }
                                 }
                             }
                         } else {
-                            updateStatus("Ready")
+                            runOnUiThread {
+                                updateStatus("Ready")
+                                resetUI()
+                                resumeWakeWordIfNeeded()
+                            }
+                        }
+                    }
+                    is ApiResponse.Error -> {
+                        runOnUiThread {
+                            updateStatus("Error: ${response.message}")
                             resetUI()
                             resumeWakeWordIfNeeded()
                         }
                     }
-                    is ApiResponse.Error -> {
-                        updateStatus("Error: ${response.message}")
-                        resetUI()
-                        resumeWakeWordIfNeeded()
-                    }
                 }
             } catch (e: Exception) {
-                updateStatus("Error: ${e.message}")
-                resetUI()
-                resumeWakeWordIfNeeded()
+                runOnUiThread {
+                    updateStatus("Error: ${e.message}")
+                    resetUI()
+                    resumeWakeWordIfNeeded()
+                }
             }
         }
     }
@@ -320,6 +354,36 @@ class MainActivity : AppCompatActivity() {
         
         if (permissions.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+        }
+        
+        // SAMSUNG WORKAROUND: Check battery optimization after permissions
+        // If wake word is enabled but battery optimization is not disabled, remind user
+        binding.root.postDelayed({
+            checkBatteryOptimization()
+        }, 1000)
+    }
+    
+    private fun checkBatteryOptimization() {
+        // Only check if wake word is enabled
+        if (!settings.isWakeWordEnabled()) {
+            return
+        }
+        
+        // If battery optimization is not disabled, show a reminder (once per session)
+        if (!SamsungBatteryHelper.isBatteryOptimizationDisabled(this)) {
+            if (SamsungBatteryHelper.isSamsungDevice()) {
+                Toast.makeText(
+                    this,
+                    "⚠️ Battery optimization is enabled. Wake word may not work reliably. Check Settings.",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Battery optimization is enabled. Wake word detection may be unreliable.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
     

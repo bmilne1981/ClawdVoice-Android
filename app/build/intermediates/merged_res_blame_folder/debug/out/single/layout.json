@@ -1,7 +1,11 @@
 [
     {
-        "merged": "com.clawd.voice.app-mergeDebugResources-35:/layout/activity_main.xml",
-        "source": "com.clawd.voice.app-main-38:/layout/activity_main.xml"
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-mergeDebugResources-35:/layout/activity_settings.xml",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-38:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-mergeDebugResources-35:/layout/activity_main.xml",
+        "source": "/Users/brianmilne/.gradle/daemon/8.2/com.clawd.voice.app-main-38:/layout/activity_main.xml"
     },
     {
         "merged": "com.clawd.voice.app-mergeDebugResources-35:/layout/activity_settings.xml",

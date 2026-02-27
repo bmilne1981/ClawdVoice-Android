@@ -81,6 +81,26 @@ class ApiClient {
         }
     }
     
+    suspend fun fetchAck(serverUrl: String, transcript: String): ByteArray? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val encoded = java.net.URLEncoder.encode(transcript, "UTF-8")
+                val request = Request.Builder()
+                    .url("$serverUrl/voice/ack?q=$encoded")
+                    .build()
+                
+                val response = client.newCall(request).execute()
+                if (response.isSuccessful && response.code == 200) {
+                    response.body?.bytes()
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+    
     private fun fetchAudio(url: String): ByteArray? {
         return try {
             val request = Request.Builder().url(url).build()

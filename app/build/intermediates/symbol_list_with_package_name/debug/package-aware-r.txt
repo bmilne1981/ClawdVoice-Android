@@ -3182,6 +3182,7 @@ id autoCompleteToEnd
 id autoCompleteToStart
 id barrier
 id baseline
+id batteryStatusButton
 id beginOnFirstDraw
 id beginning
 id bestChoice

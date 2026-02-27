@@ -8,14 +8,36 @@
         android:minSdkVersion="26"
         android:targetSdkVersion="34" />
 
+    <!-- Standard permissions -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- SAMSUNG WORKAROUND: Foreground service permissions -->
+    <!-- FOREGROUND_SERVICE is required for all foreground services -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- FOREGROUND_SERVICE_MICROPHONE is required on Android 14+ for mic access in foreground service -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+
+    <!-- SAMSUNG WORKAROUND: Wake lock permission -->
+    <!-- Allows the service to keep CPU awake while listening, preventing deep sleep -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- SAMSUNG WORKAROUND: Notification permission (Android 13+) -->
+    <!-- Required to show foreground service notification -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- SAMSUNG WORKAROUND: Battery optimization exemption -->
+    <!-- Allows app to request exemption from Doze mode -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- SAMSUNG WORKAROUND: Boot receiver permission -->
+    <!-- Allows service to restart automatically after device reboot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- SAMSUNG WORKAROUND: Exact alarm permission (Android 12+) -->
+    <!-- Required for AlarmManager-based service restart mechanism -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <permission
         android:name="com.clawd.voice.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -49,13 +71,19 @@
             android:exported="false"
             android:parentActivityName="com.clawd.voice.MainActivity" />
 
+        <!-- SAMSUNG WORKAROUND: Foreground service with microphone type -->
+        <!-- foregroundServiceType="microphone" tells Android this service needs mic access -->
+        <!-- This is required on Android 14+ and helps prevent Samsung from killing it -->
         <service
             android:name="com.clawd.voice.WakeWordService"
             android:exported="false"
             android:foregroundServiceType="microphone" />
 
+        <!-- SAMSUNG WORKAROUND: Boot receiver for auto-start -->
+        <!-- Restarts wake word service after device reboot -->
         <receiver
             android:name="com.clawd.voice.BootReceiver"
+            android:enabled="true"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -26,6 +26,9 @@ public final class ActivitySettingsBinding implements ViewBinding {
   public final TextInputEditText accessKeyInput;
 
   @NonNull
+  public final MaterialButton batteryStatusButton;
+
+  @NonNull
   public final MaterialButton saveButton;
 
   @NonNull
@@ -41,11 +44,13 @@ public final class ActivitySettingsBinding implements ViewBinding {
   public final SwitchMaterial wakeWordSwitch;
 
   private ActivitySettingsBinding(@NonNull ScrollView rootView,
-      @NonNull TextInputEditText accessKeyInput, @NonNull MaterialButton saveButton,
-      @NonNull Slider sensitivitySlider, @NonNull TextInputEditText serverUrlInput,
-      @NonNull MaterialButton testButton, @NonNull SwitchMaterial wakeWordSwitch) {
+      @NonNull TextInputEditText accessKeyInput, @NonNull MaterialButton batteryStatusButton,
+      @NonNull MaterialButton saveButton, @NonNull Slider sensitivitySlider,
+      @NonNull TextInputEditText serverUrlInput, @NonNull MaterialButton testButton,
+      @NonNull SwitchMaterial wakeWordSwitch) {
     this.rootView = rootView;
     this.accessKeyInput = accessKeyInput;
+    this.batteryStatusButton = batteryStatusButton;
     this.saveButton = saveButton;
     this.sensitivitySlider = sensitivitySlider;
     this.serverUrlInput = serverUrlInput;
@@ -86,6 +91,12 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.batteryStatusButton;
+      MaterialButton batteryStatusButton = ViewBindings.findChildViewById(rootView, id);
+      if (batteryStatusButton == null) {
+        break missingId;
+      }
+
       id = R.id.saveButton;
       MaterialButton saveButton = ViewBindings.findChildViewById(rootView, id);
       if (saveButton == null) {
@@ -116,8 +127,8 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivitySettingsBinding((ScrollView) rootView, accessKeyInput, saveButton,
-          sensitivitySlider, serverUrlInput, testButton, wakeWordSwitch);
+      return new ActivitySettingsBinding((ScrollView) rootView, accessKeyInput, batteryStatusButton,
+          saveButton, sensitivitySlider, serverUrlInput, testButton, wakeWordSwitch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
