@@ -352,6 +352,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         
+        // SMS and Contacts permissions for SMS sync
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
+            != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.READ_SMS)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+            != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.READ_CONTACTS)
+        }
+        
         if (permissions.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
         }
@@ -361,6 +371,25 @@ class MainActivity : AppCompatActivity() {
         binding.root.postDelayed({
             checkBatteryOptimization()
         }, 1000)
+        
+        // Check if notification access is granted
+        binding.root.postDelayed({
+            checkNotificationAccess()
+        }, 2000)
+    }
+    
+    private fun checkNotificationAccess() {
+        val enabledListeners = android.provider.Settings.Secure.getString(
+            contentResolver, "enabled_notification_listeners"
+        ) ?: ""
+        
+        if (!enabledListeners.contains(packageName)) {
+            Toast.makeText(
+                this,
+                "📱 Grant Notification Access in Settings for SMS bridging to Clawd",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
     
     private fun checkBatteryOptimization() {
