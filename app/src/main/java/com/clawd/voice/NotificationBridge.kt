@@ -3,6 +3,7 @@ package com.clawd.voice
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Telephony
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
@@ -31,11 +32,9 @@ class NotificationBridge : NotificationListenerService() {
             "com.samsung.android.messaging",      // Samsung Messages
             "com.google.android.apps.messaging",   // Google Messages
             "com.android.mms",                     // Stock Android MMS
-            "com.whatsapp",                        // WhatsApp
-            "com.whatsapp.w4b",                    // WhatsApp Business
-            "org.telegram.messenger",              // Telegram
+            "com.google.android.gm",              // Gmail
+            "com.microsoft.office.outlook",        // Outlook
             "com.Slack",                           // Slack
-            "com.microsoft.teams",                 // Teams
         )
         
         // Packages to always ignore
@@ -59,6 +58,31 @@ class NotificationBridge : NotificationListenerService() {
     
     // Track recent notifications to debounce
     private val recentNotifications = mutableMapOf<String, Long>()
+    
+    // Outbound SMS observer
+    private var smsOutboxObserver: SmsOutboxObserver? = null
+
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        Log.d(TAG, "NotificationBridge connected")
+        
+        // Register outbound SMS observer
+        try {
+            val settings = SettingsManager(applicationContext)
+            if (settings.isSmsSyncEnabled()) {
+                smsOutboxObserver = SmsOutboxObserver(applicationContext).also { observer ->
+                    contentResolver.registerContentObserver(
+                        Telephony.Sms.CONTENT_URI,
+                        true, // notifyForDescendants
+                        observer
+                    )
+                    Log.d(TAG, "Outbound SMS observer registered")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to register SMS observer: ${e.message}")
+        }
+    }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         sbn ?: return
@@ -84,6 +108,10 @@ class NotificationBridge : NotificationListenerService() {
         
         if (messageBody.isBlank()) return
         
+        // Skip messages from Clawd (avoid self-loop from Telegram/etc)
+        val senderLower = title.lowercase()
+        if (senderLower == "clawd" || senderLower.startsWith("clawd ")) return
+        
         // Debounce: skip if we just sent this same notification
         val dedupeKey = "$packageName:$title:${messageBody.take(50)}"
         val now = System.currentTimeMillis()
@@ -99,10 +127,9 @@ class NotificationBridge : NotificationListenerService() {
             "com.samsung.android.messaging",
             "com.google.android.apps.messaging",
             "com.android.mms" -> "sms"
-            "com.whatsapp", "com.whatsapp.w4b" -> "whatsapp"
-            "org.telegram.messenger" -> "telegram"
+            "com.google.android.gm" -> "gmail"
+            "com.microsoft.office.outlook" -> "outlook"
             "com.Slack" -> "slack"
-            "com.microsoft.teams" -> "teams"
             else -> "notification"
         }
         
@@ -184,15 +211,25 @@ class NotificationBridge : NotificationListenerService() {
         "com.samsung.android.messaging" -> "Samsung Messages"
         "com.google.android.apps.messaging" -> "Google Messages"
         "com.android.mms" -> "Messages"
-        "com.whatsapp" -> "WhatsApp"
-        "com.whatsapp.w4b" -> "WhatsApp Business"
-        "org.telegram.messenger" -> "Telegram"
+        "com.google.android.gm" -> "Gmail"
+        "com.microsoft.office.outlook" -> "Outlook"
         "com.Slack" -> "Slack"
-        "com.microsoft.teams" -> "Teams"
         else -> packageName
     }
 
     override fun onDestroy() {
+        // Unregister SMS observer
+        smsOutboxObserver?.let { observer ->
+            try {
+                contentResolver.unregisterContentObserver(observer)
+                observer.destroy()
+                Log.d(TAG, "Outbound SMS observer unregistered")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error unregistering SMS observer: ${e.message}")
+            }
+        }
+        smsOutboxObserver = null
+        
         scope.cancel()
         super.onDestroy()
     }
