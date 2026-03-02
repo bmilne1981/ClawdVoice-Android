@@ -34,7 +34,7 @@ class SmsOutboxObserver(
         private const val TAG = "SmsOutboxObserver"
         private const val DEBOUNCE_MS = 3000L
         private const val PREFS_NAME = "sms_outbox_prefs"
-        private const val LAST_SENT_ID_KEY = "last_sent_id"
+        private const val LAST_SENT_TIMESTAMP_KEY = "last_sent_timestamp"
     }
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -47,6 +47,9 @@ class SmsOutboxObserver(
 
     // Debounce: content observer fires multiple times per SMS
     private var pendingJob: Job? = null
+
+    // Track recently pushed messages to avoid duplicates across URI checks
+    private val recentPushes = mutableListOf<String>()
 
     override fun onChange(selfChange: Boolean, uri: Uri?) {
         super.onChange(selfChange, uri)
@@ -68,52 +71,75 @@ class SmsOutboxObserver(
         if (webhookUrl.isBlank() || webhookToken.isBlank()) return
 
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val lastSentId = prefs.getLong(LAST_SENT_ID_KEY, 0L)
+        val lastSentTimestamp = prefs.getLong(LAST_SENT_TIMESTAMP_KEY, System.currentTimeMillis() - 60_000) // Default: last 60s
 
-        try {
-            val uri = Telephony.Sms.Sent.CONTENT_URI
-            val projection = arrayOf(
-                Telephony.Sms._ID,
-                Telephony.Sms.ADDRESS,
-                Telephony.Sms.BODY,
-                Telephony.Sms.DATE,
-                Telephony.Sms.THREAD_ID
-            )
-            // Only get messages newer than our last seen ID
-            val selection = "${Telephony.Sms._ID} > ?"
-            val selectionArgs = arrayOf(lastSentId.toString())
-            val sortOrder = "${Telephony.Sms._ID} ASC"
+        // Query ALL SMS/RCS with type=2 (sent) since last check
+        // Using the general content URI + type filter catches both SMS and RCS
+        // on devices where Google Messages writes RCS to the telephony provider
+        val urisToCheck = listOf(
+            Telephony.Sms.CONTENT_URI,                              // Standard SMS/RCS
+            Uri.parse("content://sms"),                             // Fallback raw URI
+        )
 
-            context.contentResolver.query(
-                uri, projection, selection, selectionArgs, sortOrder
-            )?.use { cursor ->
-                val idIdx = cursor.getColumnIndexOrThrow(Telephony.Sms._ID)
-                val addressIdx = cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS)
-                val bodyIdx = cursor.getColumnIndexOrThrow(Telephony.Sms.BODY)
-                val dateIdx = cursor.getColumnIndexOrThrow(Telephony.Sms.DATE)
+        var foundAny = false
+        var maxTimestamp = lastSentTimestamp
 
-                var maxId = lastSentId
+        for (uri in urisToCheck) {
+            try {
+                val projection = arrayOf(
+                    Telephony.Sms._ID,
+                    Telephony.Sms.ADDRESS,
+                    Telephony.Sms.BODY,
+                    Telephony.Sms.DATE,
+                    Telephony.Sms.TYPE
+                )
+                // Type 2 = sent messages; query by timestamp to catch RCS too
+                val selection = "${Telephony.Sms.TYPE} = ? AND ${Telephony.Sms.DATE} > ?"
+                val selectionArgs = arrayOf("2", lastSentTimestamp.toString())
+                val sortOrder = "${Telephony.Sms.DATE} ASC"
 
-                while (cursor.moveToNext()) {
-                    val id = cursor.getLong(idIdx)
-                    val address = cursor.getString(addressIdx) ?: continue
-                    val body = cursor.getString(bodyIdx) ?: continue
-                    val date = cursor.getLong(dateIdx)
+                context.contentResolver.query(
+                    uri, projection, selection, selectionArgs, sortOrder
+                )?.use { cursor ->
+                    val addressIdx = cursor.getColumnIndexOrThrow(Telephony.Sms.ADDRESS)
+                    val bodyIdx = cursor.getColumnIndexOrThrow(Telephony.Sms.BODY)
+                    val dateIdx = cursor.getColumnIndexOrThrow(Telephony.Sms.DATE)
 
-                    if (id > maxId) maxId = id
+                    while (cursor.moveToNext()) {
+                        val address = cursor.getString(addressIdx) ?: continue
+                        val body = cursor.getString(bodyIdx) ?: continue
+                        val date = cursor.getLong(dateIdx)
 
-                    val contactName = getContactName(address)
-                    pushOutboundSms(webhookUrl, webhookToken, contactName, address, body, date)
+                        if (date > maxTimestamp) maxTimestamp = date
+
+                        // Deduplicate: check if we already pushed this exact message
+                        val dedupeKey = "$address:${body.take(50)}:$date"
+                        if (dedupeKey in recentPushes) continue
+                        recentPushes.add(dedupeKey)
+
+                        val contactName = getContactName(address)
+                        pushOutboundSms(webhookUrl, webhookToken, contactName, address, body, date)
+                        foundAny = true
+                    }
                 }
 
-                if (maxId > lastSentId) {
-                    prefs.edit().putLong(LAST_SENT_ID_KEY, maxId).apply()
-                }
+                // If we found messages from the first URI, don't check fallback
+                if (foundAny) break
+            } catch (e: SecurityException) {
+                Log.e(TAG, "SMS permission not granted for $uri: ${e.message}")
+            } catch (e: Exception) {
+                Log.d(TAG, "Could not query $uri: ${e.message}")
             }
-        } catch (e: SecurityException) {
-            Log.e(TAG, "SMS permission not granted: ${e.message}")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error reading sent SMS: ${e.message}")
+        }
+
+        if (maxTimestamp > lastSentTimestamp) {
+            prefs.edit().putLong(LAST_SENT_TIMESTAMP_KEY, maxTimestamp).apply()
+        }
+
+        // Trim dedupe set
+        if (recentPushes.size > 100) {
+            val excess = recentPushes.size - 50
+            repeat(excess) { recentPushes.removeAt(0) }
         }
     }
 

@@ -66,16 +66,38 @@ class NotificationBridge : NotificationListenerService() {
         super.onListenerConnected()
         Log.d(TAG, "NotificationBridge connected")
         
-        // Register outbound SMS observer
+        // Register outbound SMS observer on multiple URIs to catch both SMS and RCS
         try {
             val settings = SettingsManager(applicationContext)
             if (settings.isSmsSyncEnabled()) {
                 smsOutboxObserver = SmsOutboxObserver(applicationContext).also { observer ->
+                    // Standard telephony SMS content URI
                     contentResolver.registerContentObserver(
                         Telephony.Sms.CONTENT_URI,
-                        true, // notifyForDescendants
+                        true, // notifyForDescendants — catches sent, inbox, etc.
                         observer
                     )
+                    // Also observe raw content://sms in case RCS writes there differently
+                    try {
+                        contentResolver.registerContentObserver(
+                            android.net.Uri.parse("content://sms"),
+                            true,
+                            observer
+                        )
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Could not register raw sms observer: ${e.message}")
+                    }
+                    // Try Google Messages' internal provider (may not be accessible)
+                    try {
+                        contentResolver.registerContentObserver(
+                            android.net.Uri.parse("content://com.google.android.apps.messaging/conversations"),
+                            true,
+                            observer
+                        )
+                        Log.d(TAG, "Google Messages content observer registered")
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Google Messages provider not accessible (expected): ${e.message}")
+                    }
                     Log.d(TAG, "Outbound SMS observer registered")
                 }
             }
