@@ -41,6 +41,43 @@ class SettingsActivity : AppCompatActivity() {
         binding.batteryStatusButton?.setOnClickListener {
             SamsungBatteryHelper.showBatteryOptimizationStatus(this)
         }
+        
+        // SMS diagnostic button
+        binding.smsDiagnosticButton?.setOnClickListener {
+            runSmsDiagnostic()
+        }
+    }
+    
+    private fun runSmsDiagnostic() {
+        binding.smsDiagnosticButton?.isEnabled = false
+        binding.smsDiagnosticButton?.text = "Running diagnostic..."
+        
+        lifecycleScope.launch {
+            try {
+                val diagnostic = SmsDiagnostic(this@SettingsActivity)
+                val report = diagnostic.runAndPush()
+                
+                runOnUiThread {
+                    binding.smsDiagnosticButton?.isEnabled = true
+                    binding.smsDiagnosticButton?.text = "Run SMS Diagnostic"
+                    Toast.makeText(
+                        this@SettingsActivity,
+                        "Diagnostic sent to Clawd! Check Telegram.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    binding.smsDiagnosticButton?.isEnabled = true
+                    binding.smsDiagnosticButton?.text = "Run SMS Diagnostic"
+                    Toast.makeText(
+                        this@SettingsActivity,
+                        "Error: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
     }
     
     private fun saveSettings() {

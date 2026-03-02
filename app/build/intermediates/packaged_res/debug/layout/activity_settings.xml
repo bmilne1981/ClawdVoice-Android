@@ -155,6 +155,15 @@
             android:icon="@android:drawable/ic_dialog_info"
             style="@style/Widget.Material3.Button.OutlinedButton" />
 
+        <!-- SMS Diagnostic Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/smsDiagnosticButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Run SMS Diagnostic"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
         <!-- Save Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveButton"

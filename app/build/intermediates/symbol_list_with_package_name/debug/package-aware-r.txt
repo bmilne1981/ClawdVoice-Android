@@ -3499,6 +3499,7 @@ id sin
 id skipCollapsed
 id skipped
 id slide
+id smsDiagnosticButton
 id snackbar_action
 id snackbar_text
 id snap

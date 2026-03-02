@@ -26,6 +26,7 @@ id responseText
 id saveButton
 id sensitivitySlider
 id serverUrlInput
+id smsDiagnosticButton
 id statusText
 id testButton
 id toolbar

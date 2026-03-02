@@ -38,6 +38,9 @@ public final class ActivitySettingsBinding implements ViewBinding {
   public final TextInputEditText serverUrlInput;
 
   @NonNull
+  public final MaterialButton smsDiagnosticButton;
+
+  @NonNull
   public final MaterialButton testButton;
 
   @NonNull
@@ -46,14 +49,15 @@ public final class ActivitySettingsBinding implements ViewBinding {
   private ActivitySettingsBinding(@NonNull ScrollView rootView,
       @NonNull TextInputEditText accessKeyInput, @NonNull MaterialButton batteryStatusButton,
       @NonNull MaterialButton saveButton, @NonNull Slider sensitivitySlider,
-      @NonNull TextInputEditText serverUrlInput, @NonNull MaterialButton testButton,
-      @NonNull SwitchMaterial wakeWordSwitch) {
+      @NonNull TextInputEditText serverUrlInput, @NonNull MaterialButton smsDiagnosticButton,
+      @NonNull MaterialButton testButton, @NonNull SwitchMaterial wakeWordSwitch) {
     this.rootView = rootView;
     this.accessKeyInput = accessKeyInput;
     this.batteryStatusButton = batteryStatusButton;
     this.saveButton = saveButton;
     this.sensitivitySlider = sensitivitySlider;
     this.serverUrlInput = serverUrlInput;
+    this.smsDiagnosticButton = smsDiagnosticButton;
     this.testButton = testButton;
     this.wakeWordSwitch = wakeWordSwitch;
   }
@@ -115,6 +119,12 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.smsDiagnosticButton;
+      MaterialButton smsDiagnosticButton = ViewBindings.findChildViewById(rootView, id);
+      if (smsDiagnosticButton == null) {
+        break missingId;
+      }
+
       id = R.id.testButton;
       MaterialButton testButton = ViewBindings.findChildViewById(rootView, id);
       if (testButton == null) {
@@ -128,7 +138,8 @@ public final class ActivitySettingsBinding implements ViewBinding {
       }
 
       return new ActivitySettingsBinding((ScrollView) rootView, accessKeyInput, batteryStatusButton,
-          saveButton, sensitivitySlider, serverUrlInput, testButton, wakeWordSwitch);
+          saveButton, sensitivitySlider, serverUrlInput, smsDiagnosticButton, testButton,
+          wakeWordSwitch);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
