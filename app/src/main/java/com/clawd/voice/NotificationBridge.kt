@@ -46,7 +46,8 @@ class NotificationBridge : NotificationListenerService() {
         )
         
         // Debounce: don't send duplicate notifications within this window
-        private const val DEBOUNCE_MS = 2000L
+        // Extended to 1 hour to prevent notification shade replays after sending messages
+        private const val DEBOUNCE_MS = 3600000L // 1 hour
     }
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -66,7 +67,11 @@ class NotificationBridge : NotificationListenerService() {
         super.onListenerConnected()
         Log.d(TAG, "NotificationBridge connected")
         
-        // Register outbound SMS observer on multiple URIs to catch both SMS and RCS
+        // Outbound SMS observer DISABLED — causes duplicate notification spam
+        // when Brian sends a message, Google Messages refreshes notification shade
+        // and re-fires all old notifications through the bridge.
+        // Re-enable when RCS observation actually works.
+        if (false) {
         try {
             val settings = SettingsManager(applicationContext)
             if (settings.isSmsSyncEnabled()) {
@@ -104,11 +109,22 @@ class NotificationBridge : NotificationListenerService() {
         } catch (e: Exception) {
             Log.e(TAG, "Failed to register SMS observer: ${e.message}")
         }
+        } // end if (false) — outbound SMS observer disabled
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         sbn ?: return
         val packageName = sbn.packageName ?: return
+        
+        // Check if notification bridge is enabled (user toggle)
+        try {
+            val settings = SettingsManager(applicationContext)
+            if (!settings.isNotificationBridgeEnabled()) {
+                return
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to check notification bridge setting: ${e.message}")
+        }
         
         // Skip ignored packages
         if (packageName in IGNORED_PACKAGES) return
@@ -141,8 +157,8 @@ class NotificationBridge : NotificationListenerService() {
         if (lastSent != null && (now - lastSent) < DEBOUNCE_MS) return
         recentNotifications[dedupeKey] = now
         
-        // Clean up old debounce entries
-        recentNotifications.entries.removeIf { now - it.value > 30000 }
+        // Clean up old debounce entries (older than 2 hours)
+        recentNotifications.entries.removeIf { now - it.value > 7200000 }
         
         // Determine message type
         val messageType = when (packageName) {

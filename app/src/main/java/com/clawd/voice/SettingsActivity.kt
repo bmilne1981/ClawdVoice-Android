@@ -28,6 +28,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.wakeWordSwitch.isChecked = settings.isWakeWordEnabled()
         binding.accessKeyInput.setText(settings.getPorcupineAccessKey())
         binding.sensitivitySlider.value = settings.getWakeWordSensitivity()
+        binding.notificationBridgeSwitch.isChecked = settings.isNotificationBridgeEnabled()
         
         binding.saveButton.setOnClickListener {
             saveSettings()
@@ -83,6 +84,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun saveSettings() {
         val url = binding.serverUrlInput.text.toString().trim()
         val wakeWordEnabled = binding.wakeWordSwitch.isChecked
+        val notificationBridgeEnabled = binding.notificationBridgeSwitch.isChecked
         val accessKey = binding.accessKeyInput.text.toString().trim()
         val sensitivity = binding.sensitivitySlider.value
         
@@ -101,6 +103,7 @@ class SettingsActivity : AppCompatActivity() {
         lifecycleScope.launch {
             settings.setServerUrl(url)
             settings.setWakeWordEnabled(wakeWordEnabled)
+            settings.setNotificationBridgeEnabled(notificationBridgeEnabled)
             settings.setPorcupineAccessKey(accessKey)
             settings.setWakeWordSensitivity(sensitivity)
             

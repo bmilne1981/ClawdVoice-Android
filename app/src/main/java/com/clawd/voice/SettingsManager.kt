@@ -126,7 +126,7 @@ class SettingsManager(private val context: Context) {
     fun isNotificationBridgeEnabled(): Boolean {
         return runBlocking {
             context.dataStore.data.map { preferences ->
-                preferences[NOTIFICATION_BRIDGE_ENABLED_KEY] ?: true
+                preferences[NOTIFICATION_BRIDGE_ENABLED_KEY] ?: false
             }.first()
         }
     }
