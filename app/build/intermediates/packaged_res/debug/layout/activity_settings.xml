@@ -145,6 +145,108 @@
             android:textSize="12sp"
             android:textColor="@color/on_surface_variant" />
 
+        <!-- Webhook URL Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Webhook URL"
+            android:textSize="14sp"
+            android:textColor="@color/on_surface_variant"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="http://192.168.1.197:18789">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/webhookUrlInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:textColor="@color/on_surface" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="URL for the OpenClaw webhook endpoint (notifications, SMS sync). Change to port 18800 for the filter proxy."
+            android:textSize="12sp"
+            android:textColor="@color/on_surface_variant" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Webhook Token">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/webhookTokenInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/on_surface" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Bearer token for webhook authentication."
+            android:textSize="12sp"
+            android:textColor="@color/on_surface_variant" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="24dp"
+            android:background="@color/on_surface_variant" />
+
+        <!-- Notification Bridge Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification Bridge"
+            android:textSize="18sp"
+            android:textColor="@color/on_surface"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Forward notifications to Clawd"
+                android:textSize="16sp"
+                android:textColor="@color/on_surface" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/notificationBridgeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="When enabled, SMS, email, and messaging app notifications are forwarded to OpenClaw for processing. Disable to reduce token usage."
+            android:textSize="12sp"
+            android:textColor="@color/on_surface_variant" />
+
         <!-- Battery Optimization Button (Samsung workaround) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/batteryStatusButton"

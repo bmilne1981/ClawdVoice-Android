@@ -29,6 +29,8 @@ class SettingsActivity : AppCompatActivity() {
         binding.accessKeyInput.setText(settings.getPorcupineAccessKey())
         binding.sensitivitySlider.value = settings.getWakeWordSensitivity()
         binding.notificationBridgeSwitch.isChecked = settings.isNotificationBridgeEnabled()
+        binding.webhookUrlInput.setText(settings.getWebhookUrl())
+        binding.webhookTokenInput.setText(settings.getWebhookToken())
         
         binding.saveButton.setOnClickListener {
             saveSettings()
@@ -87,6 +89,8 @@ class SettingsActivity : AppCompatActivity() {
         val notificationBridgeEnabled = binding.notificationBridgeSwitch.isChecked
         val accessKey = binding.accessKeyInput.text.toString().trim()
         val sensitivity = binding.sensitivitySlider.value
+        val webhookUrl = binding.webhookUrlInput.text.toString().trim()
+        val webhookToken = binding.webhookTokenInput.text.toString().trim()
         
         if (url.isEmpty()) {
             Toast.makeText(this, "Server URL cannot be empty", Toast.LENGTH_SHORT).show()
@@ -106,6 +110,8 @@ class SettingsActivity : AppCompatActivity() {
             settings.setNotificationBridgeEnabled(notificationBridgeEnabled)
             settings.setPorcupineAccessKey(accessKey)
             settings.setWakeWordSensitivity(sensitivity)
+            settings.setWebhookUrl(webhookUrl)
+            settings.setWebhookToken(webhookToken)
             
             // Start or stop wake word service
             if (wakeWordEnabled && !wasEnabled) {

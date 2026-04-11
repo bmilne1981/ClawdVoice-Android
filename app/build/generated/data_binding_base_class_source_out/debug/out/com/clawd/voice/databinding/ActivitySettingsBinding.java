@@ -29,6 +29,9 @@ public final class ActivitySettingsBinding implements ViewBinding {
   public final MaterialButton batteryStatusButton;
 
   @NonNull
+  public final SwitchMaterial notificationBridgeSwitch;
+
+  @NonNull
   public final MaterialButton saveButton;
 
   @NonNull
@@ -46,20 +49,31 @@ public final class ActivitySettingsBinding implements ViewBinding {
   @NonNull
   public final SwitchMaterial wakeWordSwitch;
 
+  @NonNull
+  public final TextInputEditText webhookTokenInput;
+
+  @NonNull
+  public final TextInputEditText webhookUrlInput;
+
   private ActivitySettingsBinding(@NonNull ScrollView rootView,
       @NonNull TextInputEditText accessKeyInput, @NonNull MaterialButton batteryStatusButton,
-      @NonNull MaterialButton saveButton, @NonNull Slider sensitivitySlider,
-      @NonNull TextInputEditText serverUrlInput, @NonNull MaterialButton smsDiagnosticButton,
-      @NonNull MaterialButton testButton, @NonNull SwitchMaterial wakeWordSwitch) {
+      @NonNull SwitchMaterial notificationBridgeSwitch, @NonNull MaterialButton saveButton,
+      @NonNull Slider sensitivitySlider, @NonNull TextInputEditText serverUrlInput,
+      @NonNull MaterialButton smsDiagnosticButton, @NonNull MaterialButton testButton,
+      @NonNull SwitchMaterial wakeWordSwitch, @NonNull TextInputEditText webhookTokenInput,
+      @NonNull TextInputEditText webhookUrlInput) {
     this.rootView = rootView;
     this.accessKeyInput = accessKeyInput;
     this.batteryStatusButton = batteryStatusButton;
+    this.notificationBridgeSwitch = notificationBridgeSwitch;
     this.saveButton = saveButton;
     this.sensitivitySlider = sensitivitySlider;
     this.serverUrlInput = serverUrlInput;
     this.smsDiagnosticButton = smsDiagnosticButton;
     this.testButton = testButton;
     this.wakeWordSwitch = wakeWordSwitch;
+    this.webhookTokenInput = webhookTokenInput;
+    this.webhookUrlInput = webhookUrlInput;
   }
 
   @Override
@@ -101,6 +115,12 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.notificationBridgeSwitch;
+      SwitchMaterial notificationBridgeSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (notificationBridgeSwitch == null) {
+        break missingId;
+      }
+
       id = R.id.saveButton;
       MaterialButton saveButton = ViewBindings.findChildViewById(rootView, id);
       if (saveButton == null) {
@@ -137,9 +157,21 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.webhookTokenInput;
+      TextInputEditText webhookTokenInput = ViewBindings.findChildViewById(rootView, id);
+      if (webhookTokenInput == null) {
+        break missingId;
+      }
+
+      id = R.id.webhookUrlInput;
+      TextInputEditText webhookUrlInput = ViewBindings.findChildViewById(rootView, id);
+      if (webhookUrlInput == null) {
+        break missingId;
+      }
+
       return new ActivitySettingsBinding((ScrollView) rootView, accessKeyInput, batteryStatusButton,
-          saveButton, sensitivitySlider, serverUrlInput, smsDiagnosticButton, testButton,
-          wakeWordSwitch);
+          notificationBridgeSwitch, saveButton, sensitivitySlider, serverUrlInput,
+          smsDiagnosticButton, testButton, wakeWordSwitch, webhookTokenInput, webhookUrlInput);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
