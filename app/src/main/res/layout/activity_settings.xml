@@ -247,6 +247,133 @@
             android:textSize="12sp"
             android:textColor="@color/on_surface_variant" />
 
+        <!-- Webhook Source Filters -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Webhook Sources"
+            android:textSize="14sp"
+            android:textColor="@color/on_surface_variant"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toggle which notification sources forward webhooks to OpenClaw. Disable sources you don't need or that cause duplicates."
+            android:textSize="12sp"
+            android:textColor="@color/on_surface_variant" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Gmail webhooks"
+                android:textSize="16sp"
+                android:textColor="@color/on_surface" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/webhookGmailSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Outlook webhooks"
+                android:textSize="16sp"
+                android:textColor="@color/on_surface" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/webhookOutlookSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SMS webhooks"
+                android:textSize="16sp"
+                android:textColor="@color/on_surface" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/webhookSmsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Phone call webhooks"
+                android:textSize="16sp"
+                android:textColor="@color/on_surface" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/webhookPhoneSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Slack webhooks"
+                android:textSize="16sp"
+                android:textColor="@color/on_surface" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/webhookSlackSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
         <!-- Battery Optimization Button (Samsung workaround) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/batteryStatusButton"

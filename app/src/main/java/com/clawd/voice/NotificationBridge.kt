@@ -185,6 +185,24 @@ class NotificationBridge : NotificationListenerService() {
             else -> "notification"
         }
 
+        // Check webhook source filters — skip if this source type is disabled
+        try {
+            val filterSettings = SettingsManager(applicationContext)
+            val sourceEnabled = when (messageType) {
+                "gmail" -> filterSettings.isWebhookGmailEnabled()
+                "outlook" -> filterSettings.isWebhookOutlookEnabled()
+                "sms" -> filterSettings.isWebhookSmsEnabled()
+                "slack" -> filterSettings.isWebhookSlackEnabled()
+                else -> true // Unknown types pass through
+            }
+            if (!sourceEnabled) {
+                Log.d(TAG, "[$messageType] webhook filtered out by user preference")
+                return
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to check webhook filter setting: ${e.message}")
+        }
+
         Log.d(TAG, "[$messageType] $title: ${messageBody.take(80)}...")
 
         // Push to OpenClaw webhook

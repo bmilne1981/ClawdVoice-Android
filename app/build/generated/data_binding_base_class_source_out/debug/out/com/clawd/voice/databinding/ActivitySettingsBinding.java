@@ -50,6 +50,21 @@ public final class ActivitySettingsBinding implements ViewBinding {
   public final SwitchMaterial wakeWordSwitch;
 
   @NonNull
+  public final SwitchMaterial webhookGmailSwitch;
+
+  @NonNull
+  public final SwitchMaterial webhookOutlookSwitch;
+
+  @NonNull
+  public final SwitchMaterial webhookPhoneSwitch;
+
+  @NonNull
+  public final SwitchMaterial webhookSlackSwitch;
+
+  @NonNull
+  public final SwitchMaterial webhookSmsSwitch;
+
+  @NonNull
   public final TextInputEditText webhookTokenInput;
 
   @NonNull
@@ -60,8 +75,10 @@ public final class ActivitySettingsBinding implements ViewBinding {
       @NonNull SwitchMaterial notificationBridgeSwitch, @NonNull MaterialButton saveButton,
       @NonNull Slider sensitivitySlider, @NonNull TextInputEditText serverUrlInput,
       @NonNull MaterialButton smsDiagnosticButton, @NonNull MaterialButton testButton,
-      @NonNull SwitchMaterial wakeWordSwitch, @NonNull TextInputEditText webhookTokenInput,
-      @NonNull TextInputEditText webhookUrlInput) {
+      @NonNull SwitchMaterial wakeWordSwitch, @NonNull SwitchMaterial webhookGmailSwitch,
+      @NonNull SwitchMaterial webhookOutlookSwitch, @NonNull SwitchMaterial webhookPhoneSwitch,
+      @NonNull SwitchMaterial webhookSlackSwitch, @NonNull SwitchMaterial webhookSmsSwitch,
+      @NonNull TextInputEditText webhookTokenInput, @NonNull TextInputEditText webhookUrlInput) {
     this.rootView = rootView;
     this.accessKeyInput = accessKeyInput;
     this.batteryStatusButton = batteryStatusButton;
@@ -72,6 +89,11 @@ public final class ActivitySettingsBinding implements ViewBinding {
     this.smsDiagnosticButton = smsDiagnosticButton;
     this.testButton = testButton;
     this.wakeWordSwitch = wakeWordSwitch;
+    this.webhookGmailSwitch = webhookGmailSwitch;
+    this.webhookOutlookSwitch = webhookOutlookSwitch;
+    this.webhookPhoneSwitch = webhookPhoneSwitch;
+    this.webhookSlackSwitch = webhookSlackSwitch;
+    this.webhookSmsSwitch = webhookSmsSwitch;
     this.webhookTokenInput = webhookTokenInput;
     this.webhookUrlInput = webhookUrlInput;
   }
@@ -157,6 +179,36 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.webhookGmailSwitch;
+      SwitchMaterial webhookGmailSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (webhookGmailSwitch == null) {
+        break missingId;
+      }
+
+      id = R.id.webhookOutlookSwitch;
+      SwitchMaterial webhookOutlookSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (webhookOutlookSwitch == null) {
+        break missingId;
+      }
+
+      id = R.id.webhookPhoneSwitch;
+      SwitchMaterial webhookPhoneSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (webhookPhoneSwitch == null) {
+        break missingId;
+      }
+
+      id = R.id.webhookSlackSwitch;
+      SwitchMaterial webhookSlackSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (webhookSlackSwitch == null) {
+        break missingId;
+      }
+
+      id = R.id.webhookSmsSwitch;
+      SwitchMaterial webhookSmsSwitch = ViewBindings.findChildViewById(rootView, id);
+      if (webhookSmsSwitch == null) {
+        break missingId;
+      }
+
       id = R.id.webhookTokenInput;
       TextInputEditText webhookTokenInput = ViewBindings.findChildViewById(rootView, id);
       if (webhookTokenInput == null) {
@@ -171,7 +223,9 @@ public final class ActivitySettingsBinding implements ViewBinding {
 
       return new ActivitySettingsBinding((ScrollView) rootView, accessKeyInput, batteryStatusButton,
           notificationBridgeSwitch, saveButton, sensitivitySlider, serverUrlInput,
-          smsDiagnosticButton, testButton, wakeWordSwitch, webhookTokenInput, webhookUrlInput);
+          smsDiagnosticButton, testButton, wakeWordSwitch, webhookGmailSwitch, webhookOutlookSwitch,
+          webhookPhoneSwitch, webhookSlackSwitch, webhookSmsSwitch, webhookTokenInput,
+          webhookUrlInput);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

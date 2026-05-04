@@ -60,6 +60,12 @@ class SmsSyncService(private val context: Context) {
             Log.w(TAG, "Webhook not configured")
             return@withContext 0
         }
+        
+        // Check if SMS webhooks are enabled
+        if (!settings.isWebhookSmsEnabled()) {
+            Log.d(TAG, "SMS webhooks disabled by user preference")
+            return@withContext 0
+        }
 
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val lastSync = prefs.getLong(LAST_SYNC_KEY, System.currentTimeMillis() - 24 * 60 * 60 * 1000) // Default: last 24h
@@ -100,6 +106,12 @@ class SmsSyncService(private val context: Context) {
         
         if (webhookUrl.isBlank() || webhookToken.isBlank()) {
             Log.w(TAG, "Webhook not configured")
+            return@withContext 0
+        }
+        
+        // Check if SMS webhooks are enabled
+        if (!settings.isWebhookSmsEnabled()) {
+            Log.d(TAG, "SMS webhooks disabled by user preference")
             return@withContext 0
         }
 

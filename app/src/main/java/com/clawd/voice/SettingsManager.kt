@@ -26,6 +26,13 @@ class SettingsManager(private val context: Context) {
         private val NOTIFICATION_BRIDGE_ENABLED_KEY = booleanPreferencesKey("notification_bridge_enabled")
         private val SMS_SYNC_ENABLED_KEY = booleanPreferencesKey("sms_sync_enabled")
         
+        // Webhook source filter keys (default all enabled)
+        private val WEBHOOK_GMAIL_ENABLED_KEY = booleanPreferencesKey("webhook_gmail_enabled")
+        private val WEBHOOK_OUTLOOK_ENABLED_KEY = booleanPreferencesKey("webhook_outlook_enabled")
+        private val WEBHOOK_SMS_ENABLED_KEY = booleanPreferencesKey("webhook_sms_enabled")
+        private val WEBHOOK_PHONE_ENABLED_KEY = booleanPreferencesKey("webhook_phone_enabled")
+        private val WEBHOOK_SLACK_ENABLED_KEY = booleanPreferencesKey("webhook_slack_enabled")
+        
         const val DEFAULT_SERVER_URL = "http://192.168.1.197:8770"
         const val DEFAULT_SENSITIVITY = 0.7f
         const val DEFAULT_ACCESS_KEY = "CsJhQLyWP8B6qkqFQ7It7H7JMVrffEQmnC6cBrPwNdxMNfkR4uNeTQ=="
@@ -148,6 +155,78 @@ class SettingsManager(private val context: Context) {
     suspend fun setSmsSyncEnabled(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[SMS_SYNC_ENABLED_KEY] = enabled
+        }
+    }
+    
+    // Webhook source filter methods
+    
+    fun isWebhookGmailEnabled(): Boolean {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[WEBHOOK_GMAIL_ENABLED_KEY] ?: true
+            }.first()
+        }
+    }
+    
+    suspend fun setWebhookGmailEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[WEBHOOK_GMAIL_ENABLED_KEY] = enabled
+        }
+    }
+    
+    fun isWebhookOutlookEnabled(): Boolean {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[WEBHOOK_OUTLOOK_ENABLED_KEY] ?: true
+            }.first()
+        }
+    }
+    
+    suspend fun setWebhookOutlookEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[WEBHOOK_OUTLOOK_ENABLED_KEY] = enabled
+        }
+    }
+    
+    fun isWebhookSmsEnabled(): Boolean {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[WEBHOOK_SMS_ENABLED_KEY] ?: true
+            }.first()
+        }
+    }
+    
+    suspend fun setWebhookSmsEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[WEBHOOK_SMS_ENABLED_KEY] = enabled
+        }
+    }
+    
+    fun isWebhookPhoneEnabled(): Boolean {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[WEBHOOK_PHONE_ENABLED_KEY] ?: true
+            }.first()
+        }
+    }
+    
+    suspend fun setWebhookPhoneEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[WEBHOOK_PHONE_ENABLED_KEY] = enabled
+        }
+    }
+    
+    fun isWebhookSlackEnabled(): Boolean {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[WEBHOOK_SLACK_ENABLED_KEY] ?: true
+            }.first()
+        }
+    }
+    
+    suspend fun setWebhookSlackEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[WEBHOOK_SLACK_ENABLED_KEY] = enabled
         }
     }
 }

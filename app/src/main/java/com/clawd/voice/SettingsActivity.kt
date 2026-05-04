@@ -32,6 +32,13 @@ class SettingsActivity : AppCompatActivity() {
         binding.webhookUrlInput.setText(settings.getWebhookUrl())
         binding.webhookTokenInput.setText(settings.getWebhookToken())
         
+        // Webhook source filters
+        binding.webhookGmailSwitch.isChecked = settings.isWebhookGmailEnabled()
+        binding.webhookOutlookSwitch.isChecked = settings.isWebhookOutlookEnabled()
+        binding.webhookSmsSwitch.isChecked = settings.isWebhookSmsEnabled()
+        binding.webhookPhoneSwitch.isChecked = settings.isWebhookPhoneEnabled()
+        binding.webhookSlackSwitch.isChecked = settings.isWebhookSlackEnabled()
+        
         binding.saveButton.setOnClickListener {
             saveSettings()
         }
@@ -92,6 +99,13 @@ class SettingsActivity : AppCompatActivity() {
         val webhookUrl = binding.webhookUrlInput.text.toString().trim()
         val webhookToken = binding.webhookTokenInput.text.toString().trim()
         
+        // Webhook source filters
+        val webhookGmailEnabled = binding.webhookGmailSwitch.isChecked
+        val webhookOutlookEnabled = binding.webhookOutlookSwitch.isChecked
+        val webhookSmsEnabled = binding.webhookSmsSwitch.isChecked
+        val webhookPhoneEnabled = binding.webhookPhoneSwitch.isChecked
+        val webhookSlackEnabled = binding.webhookSlackSwitch.isChecked
+        
         if (url.isEmpty()) {
             Toast.makeText(this, "Server URL cannot be empty", Toast.LENGTH_SHORT).show()
             return
@@ -112,6 +126,13 @@ class SettingsActivity : AppCompatActivity() {
             settings.setWakeWordSensitivity(sensitivity)
             settings.setWebhookUrl(webhookUrl)
             settings.setWebhookToken(webhookToken)
+            
+            // Save webhook source filters
+            settings.setWebhookGmailEnabled(webhookGmailEnabled)
+            settings.setWebhookOutlookEnabled(webhookOutlookEnabled)
+            settings.setWebhookSmsEnabled(webhookSmsEnabled)
+            settings.setWebhookPhoneEnabled(webhookPhoneEnabled)
+            settings.setWebhookSlackEnabled(webhookSlackEnabled)
             
             // Start or stop wake word service
             if (wakeWordEnabled && !wasEnabled) {

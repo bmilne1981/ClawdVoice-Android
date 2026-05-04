@@ -33,6 +33,11 @@ id testButton
 id toolbar
 id transcriptText
 id wakeWordSwitch
+id webhookGmailSwitch
+id webhookOutlookSwitch
+id webhookPhoneSwitch
+id webhookSlackSwitch
+id webhookSmsSwitch
 id webhookTokenInput
 id webhookUrlInput
 layout activity_main
