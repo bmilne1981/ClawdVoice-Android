@@ -278,10 +278,18 @@ class SmsDiagnostic(private val context: Context) {
                     .post(payload.toString().toRequestBody("application/json".toMediaType()))
                     .build()
 
-                client.newCall(request).execute().close()
+                val response = client.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    val body = response.body?.string()?.take(200) ?: ""
+                    throw Exception("HTTP ${response.code}: $body")
+                }
+                response.close()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to push diagnostic: ${e.message}")
+                throw e  // Re-throw so caller knows it failed
             }
+        } else {
+            throw Exception("Webhook URL or token not configured")
         }
         
         return report

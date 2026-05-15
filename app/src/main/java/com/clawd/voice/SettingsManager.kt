@@ -36,7 +36,7 @@ class SettingsManager(private val context: Context) {
         const val DEFAULT_SERVER_URL = "http://192.168.1.197:8770"
         const val DEFAULT_SENSITIVITY = 0.7f
         const val DEFAULT_ACCESS_KEY = "CsJhQLyWP8B6qkqFQ7It7H7JMVrffEQmnC6cBrPwNdxMNfkR4uNeTQ=="
-        const val DEFAULT_WEBHOOK_URL = "http://192.168.1.197:18789"
+        const val DEFAULT_WEBHOOK_URL = "http://192.168.1.162:18789"
         const val DEFAULT_WEBHOOK_TOKEN = "Q75MsIFj_9m551dG3qpxdfd9zwjIL2hA"
     }
     
