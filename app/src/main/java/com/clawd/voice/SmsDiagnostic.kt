@@ -271,19 +271,21 @@ class SmsDiagnostic(private val context: Context) {
                     put("message", report)
                 }
 
-                val request = Request.Builder()
-                    .url("$webhookUrl/hooks/alert")
-                    .addHeader("Authorization", "Bearer $webhookToken")
-                    .addHeader("Content-Type", "application/json")
-                    .post(payload.toString().toRequestBody("application/json".toMediaType()))
-                    .build()
+                withContext(Dispatchers.IO) {
+                    val request = Request.Builder()
+                        .url(webhookUrl)
+                        .addHeader("Authorization", "Bearer $webhookToken")
+                        .addHeader("Content-Type", "application/json")
+                        .post(payload.toString().toRequestBody("application/json".toMediaType()))
+                        .build()
 
-                val response = client.newCall(request).execute()
-                if (!response.isSuccessful) {
-                    val body = response.body?.string()?.take(200) ?: ""
-                    throw Exception("HTTP ${response.code}: $body")
+                    val response = client.newCall(request).execute()
+                    if (!response.isSuccessful) {
+                        val body = response.body?.string()?.take(200) ?: ""
+                        throw Exception("HTTP ${response.code}: $body")
+                    }
+                    response.close()
                 }
-                response.close()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to push diagnostic: ${e.message}")
                 throw e  // Re-throw so caller knows it failed

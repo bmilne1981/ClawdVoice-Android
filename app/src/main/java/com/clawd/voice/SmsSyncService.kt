@@ -263,7 +263,7 @@ class SmsSyncService(private val context: Context) {
             }
 
             val request = Request.Builder()
-                .url("$webhookUrl/hooks/alert")
+                .url(webhookUrl)
                 .addHeader("Authorization", "Bearer $webhookToken")
                 .addHeader("Content-Type", "application/json")
                 .post(payload.toString().toRequestBody("application/json".toMediaType()))
